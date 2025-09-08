@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo chmod ugo+rwx -R ./
           export ANDROID_NDK_HOME=~/android-ndk-r28c
-          ./make_android_lua53.sh
+          ./make_android_lua53_16kb.sh
       - name: Upload53
         uses: actions/upload-artifact@v4
         with:
