@@ -23,6 +23,18 @@ jobs:
           sudo chmod ugo+rwx -R ./
           export ANDROID_NDK_HOME=~/android-ndk-r28c
           ./make_android_lua53_16kb.sh
+          
+      - name: Verify 16KB alignment
+        run: |
+          echo "=== Final verification of 16KB alignment ==="
+          for file in $(find ./plugin_lua53 -name "*.so"); do
+              echo "=== Checking: $file ==="
+              readelf -l "$file" | grep -E "(LOAD|Align)" || echo "No alignment info found"
+              echo "Page size alignment:"
+              readelf -l "$file" | awk '/LOAD/ {getline; print "  " $0}' || echo "No page info found"
+              echo "---"
+          done
+          
       - name: Upload53
         uses: actions/upload-artifact@v4
         with:
