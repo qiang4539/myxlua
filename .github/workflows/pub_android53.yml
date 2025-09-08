@@ -31,35 +31,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: [android]
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: plugin_lua53
           path: plugin_lua53/
       - name: Create Release Asset
         run: |
-          cd plugin_lua53/ && tar cvfz ../lua53_.tgz Plugins && cd -
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
+          cd plugin_lua53/ && tar cvfz ../lua53_fixFileDescriptor.tgz Plugins && cd -
+      - name: Delete existing release if exists
+        run: |
+          gh release delete fixFileDescriptor --yes || true
+          git tag -d fixFileDescriptor || true
+          git push --delete origin fixFileDescriptor || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: fixFileDescriptor-${{ github.run_number }}
-          release_name: Tag:fixFileDescriptor-${{ github.run_number }}
+          tag_name: fixFileDescriptor
+          name: "fixFileDescriptor Release"
           draft: false
           prerelease: false
           files: ./lua53_fixFileDescriptor.tgz
           generate_release_notes: true
-          # 如果 release 已存在则更新它
-          make_latest: true
-
-      - name: Upload lua53 Plugins
-        #id: upload-release-asset  
-        uses: softprops/action-gh-release@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./lua53_fixFileDescriptor.tgz
-          asset_name: lua53_fixFileDescriptor.tgz
-          asset_content_type: application/tgz 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
