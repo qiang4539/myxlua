@@ -48,6 +48,10 @@ jobs:
           release_name: Tag:fixFileDescriptor-${{ github.run_number }}
           draft: false
           prerelease: false
+          files: ./lua53_fixFileDescriptor.tgz
+          generate_release_notes: true
+          # 如果 release 已存在则更新它
+          make_latest: true
 
       - name: Upload lua53 Plugins
         #id: upload-release-asset  
