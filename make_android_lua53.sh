@@ -24,6 +24,6 @@ function build() {
     cp ${BUILD_PATH}/libxlua.so plugin_lua53/Plugins/Android/libs/${ABI}/libxlua.so
 }
 
-build android-16 armeabi-v7a arm-linux-androideabi-4.9
-build android-16 arm64-v8a  arm-linux-androideabi-clang
-build android-16 x86 x86-4.9
+build android-35 armeabi-v7a arm-linux-androideabi-4.9
+build android-35 arm64-v8a  arm-linux-androideabi-clang
+build android-53 x86 x86-4.9
