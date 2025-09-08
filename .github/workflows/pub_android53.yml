@@ -18,15 +18,19 @@ jobs:
           sudo apt install unzip -y
           unzip -q NDK
           ANDROID_NDK_HOME=$(pwd)/android-ndk-r15c
-      - name: Build
+      - name: Build with 16KB alignment
         run: |
           sudo chmod ugo+rwx -R ./
+          # 设置16KB对齐的编译标志
+          export CFLAGS="-falign-functions=16384 -falign-loops=16384 -falign-jumps=16384"
+          export CXXFLAGS="-falign-functions=16384 -falign-loops=16384 -falign-jumps=16384"
+          export LDFLAGS="-Wl,--section-alignment=16384 -Wl,--file-alignment=16384"
           ./make_android_lua53.sh
       - name: Upload53
         uses: actions/upload-artifact@v4
         with:
           path: ./plugin_lua53/**/*
-          name: plugin_lua53   
+          name: plugin_lua53
   publish:
     runs-on: ubuntu-latest
     needs: [android]
