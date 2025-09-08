@@ -37,15 +37,15 @@ jobs:
           path: plugin_lua53/
       - name: Create Release Asset
         run: |
-          cd plugin_lua53/ && tar cvfz ../lua53_fixFileDescriptor.tgz Plugins && cd -
+          cd plugin_lua53/ && tar cvfz ../lua53_.tgz Plugins && cd -
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: fixFileDescriptor
-          release_name: Tag:fixFileDescriptor
+          tag_name: fixFileDescriptor-${{ github.run_number }}
+          release_name: Tag:fixFileDescriptor-${{ github.run_number }}
           draft: false
           prerelease: false
 
